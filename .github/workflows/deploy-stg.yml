@@ -3,17 +3,17 @@ name: Deploy to Staging
 on:
   push:
     branches:
-      - main # TODO: Replace 'main' with your actual default branch name if different
+      - main
     paths:
       - '**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'
       - '.firebaserc'
       - 'firebase.json'
-      - '.github/workflows/deploy-stg.yml' # Corrected path to the workflow file itself
+      - '.github/workflows/deploy-stg.yml'
 
 jobs:
   deploy-stg:
     name: Deploy to Staging
-    runs-on: ubuntu-latest # TODO: Change if you use a specific self-hosted runner (e.g., for gcp-shared)
+    runs-on: ubuntu-latest
 
     # permissions:
     #   contents: 'read'

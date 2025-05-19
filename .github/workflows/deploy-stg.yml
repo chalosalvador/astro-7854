@@ -1,0 +1,47 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - main # TODO: Replace 'main' with your actual default branch name if different
+    paths:
+      - '**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'
+      - '.firebaserc'
+      - 'firebase.json'
+      - '.deploy-stg.yml' # Consider changing to '.github/workflows/deploy-stg.yml' if you want changes to the workflow to trigger it
+
+jobs:
+  deploy-stg:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest # TODO: Change if you use a specific self-hosted runner (e.g., for gcp-shared)
+
+    # permissions:
+    #   contents: 'read'
+    #   id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --no-frozen-lockfile
+
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASTRO_TEST }}' # Ensure GCP_SERVICE_ACCOUNT secret is set in GitHub
+
+      # - name: Create .env file for Staging
+      #   run: echo "${{ secrets.DOT_ENV_STAGING }}" > .env # Ensure DOT_ENV_STAGING secret is set in GitHub
+
+      - name: Enable Firebase Web Frameworks experiment
+        run: npx firebase experiments:enable webframeworks
+
+      - name: Deploy to Firebase Hosting (Staging)
+        run: npx firebase deploy --only hosting:stg --debug 

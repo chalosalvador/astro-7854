@@ -8,7 +8,7 @@ on:
       - '**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'
       - '.firebaserc'
       - 'firebase.json'
-      - '.deploy-stg.yml' # Consider changing to '.github/workflows/deploy-stg.yml' if you want changes to the workflow to trigger it
+      - '.github/workflows/deploy-stg.yml' # Corrected path to the workflow file itself
 
 jobs:
   deploy-stg:
